@@ -1,11 +1,12 @@
 import React from "react";
 import { TreeViewNodeProps } from "./types";
-const TreeViewNode: React.FunctionComponent = ({
+const TreeViewNode: React.FunctionComponent<TreeViewNodeProps> = ({
   onToggleExtend,
   nodeInfo,
-}: TreeViewNodeProps) => {
-  const { key, children, name, status, expand, show, x, y, expandSvgInfo } =
-    nodeInfo;
+  children,
+}) => {
+  const { key, expand, show, x, y, expandSvgInfo } = nodeInfo;
+  const childrenData = nodeInfo.children;
   return (
     <div
       style={{
@@ -20,11 +21,7 @@ const TreeViewNode: React.FunctionComponent = ({
         display: show ? "flex" : "none",
       }}
     >
-      <img
-        src={`https://ik.imagekit.io/mrmiss/1625821015837_lMqPfTNXP.png`}
-        width="54"
-        height="27"
-      />
+      {children}
       <div
         style={{
           width: "340px",
@@ -34,10 +31,8 @@ const TreeViewNode: React.FunctionComponent = ({
           textOverflow: "ellipsis",
           wordBreak: "break-all",
         }}
-      >
-        {name}
-      </div>
-      {children?.length > 0 ? (
+      ></div>
+      {childrenData?.length > 0 ? (
         <div
           onClick={() => {
             // console.log("onClick");
@@ -58,7 +53,7 @@ const TreeViewNode: React.FunctionComponent = ({
             cursor: "pointer",
           }}
         >
-          {expand ? "-" : children?.length}
+          {expand ? "-" : childrenData?.length}
         </div>
       ) : null}
       {expandSvgInfo ? (

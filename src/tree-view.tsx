@@ -1,26 +1,35 @@
 import React, { useEffect, useState, useLayoutEffect, useRef } from "react";
-import { TreeViewProps } from "./types";
+import { TreeViewProps, TreeViewNodeInfo, DataSource } from "./types";
 
 import TreeViewNode from "./tree-view-node";
 
-const TreeView: React.FunctionComponent = ({
+const TreeView: React.FunctionComponent<TreeViewProps> = ({
   dataSource,
   width,
   height,
-}: //   scaleTool,
-TreeViewProps) => {
-  const [originData, setOriginData] = useState([]);
-  const [okrTreeInfo, setOkrTreeInfo] = useState([]);
+  leafHeight,
+  leafWidth,
+  LeafNodeComponent,
+}) => {
+  const leafAllHeight = leafHeight + 40;
+  const [originData, setOriginData] = useState<TreeViewNodeInfo[]>([]);
+  const [okrTreeInfo, setOkrTreeInfo] = useState<TreeViewNodeInfo[]>([]);
 
-  const wrpperRef = useRef(null);
-  const [startDragXY, setStartDragXY] = useState(null);
-  const [baseY, setBaseY] = useState(0);
+  const wrpperRef = useRef<HTMLDivElement>(null);
+  const [startDragXY, setStartDragXY] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const [originY, setOriginY] = useState(0);
+
   const [scale, setScale] = useState(100);
+  const [levelNum, setLevelNum] = useState(0);
   // setScale(scale - 10);
   // setStartDrag;
   useEffect(() => {
-    let queue = dataSource.map((x, i) => {
+    let queue: TreeViewNodeInfo[] = (
+      dataSource as unknown as TreeViewNodeInfo[]
+    ).map((x, i) => {
       x.level = 1;
       x.index = i;
       x.expand = true;
@@ -30,14 +39,13 @@ TreeViewProps) => {
       return x;
     });
     let pos = 0;
-    let indexLevelMap = {};
+    let indexLevelMap: { [key: string]: number } = {};
     // let queue = [];
     while (pos < queue.length) {
       if (queue[pos].children) {
-        const level = queue[pos].level + 1;
-        queue[pos].childrenIds = queue[pos].children.map((x) => x.id);
+        const level = (queue[pos].level as number) + 1;
         queue.push(
-          ...queue[pos].children.map((x, i) => {
+          ...(queue[pos].children as Array<any>).map((x, i) => {
             if (indexLevelMap[level]) {
               indexLevelMap[level]++;
             } else {
@@ -55,15 +63,16 @@ TreeViewProps) => {
       }
       pos++;
     }
-    // console.log("originData", dataSource);
-    setOriginData(dataSource);
+    console.log("indexLevelMap", indexLevelMap);
+    setLevelNum(Object.keys(indexLevelMap).length + 1);
+    setOriginData(dataSource as unknown as TreeViewNodeInfo[]);
   }, [dataSource]);
 
   useEffect(() => {
     if (originData.length < 1) {
       return;
     }
-    let queue = originData.map((x) => x);
+    let queue: TreeViewNodeInfo[] = originData.map((x) => x);
 
     let y = 0;
 
@@ -72,9 +81,9 @@ TreeViewProps) => {
     }
 
     if (originY === 0) {
-      setOriginY(y - 120);
+      setOriginY(y - leafAllHeight);
     }
-    y = (y - 120) / 2;
+    y = (y - leafAllHeight) / 2;
     for (let i = 0; i < queue.length; i++) {
       y = dfsTree(queue[i], y, 1, [i]);
     }
@@ -84,8 +93,8 @@ TreeViewProps) => {
     while (pos < queue.length) {
       if (queue[pos].expand && queue[pos].children) {
         // const level = queue[pos].level + 1;
-        queue[pos].childrenIds = queue[pos].children.map((x) => x.id);
-        queue.push(...queue[pos].children);
+        // queue[pos].childrenIds = queue[pos].children.map((x) => x.id);
+        queue.push(...(queue[pos].children as Array<any>));
       }
       pos++;
     }
@@ -95,22 +104,19 @@ TreeViewProps) => {
   }, [originData]);
 
   useLayoutEffect(() => {
-    let wrapper = wrpperRef.current;
-    // console.dir(wrpperRef.current);
-    // return;
-    // console.log("baseY", baseY);
+    const wrapper = wrpperRef.current;
     // if (originY === 0) {
-    wrpperRef.current.scrollTo(
-      wrapper.scrollLeft,
-      baseY ? wrapper.scrollTop - (scale * baseY) / 100 : originY / 2
-      // (wrapper.scrollHeight - wrapper.clientHeight) / 2
-    );
-    // }
+    if (wrapper) {
+      wrapper.scrollTo(wrapper.scrollLeft, originY / 2);
+    }
+  }, [originY]);
 
-    // console.log("wrpperRef.current", wrpperRef.current.scrollTo);
-  }, [baseY, originY]);
-
-  const dfsTree = (treeNode, y, level, parentsIndex = []) => {
+  const dfsTree = (
+    treeNode: TreeViewNodeInfo,
+    y: number,
+    level: number,
+    parentsIndex: number[] = []
+  ) => {
     let nextY = y;
     treeNode.level = level;
     treeNode.parentsIndex = parentsIndex;
@@ -120,6 +126,9 @@ TreeViewProps) => {
       treeNode.expandSvgInfo = {
         pathNum: treeNode.children.length + 2,
         pathsInfo: [],
+        posX: 0,
+        posY: 0,
+        height: 0,
       };
       let y0 = 0;
       for (let i = 0; i < treeNode.children.length; i++) {
@@ -139,7 +148,7 @@ TreeViewProps) => {
           y1: treeNode.children[i].y - y0 + 2,
         });
       }
-      nextY -= 120;
+      nextY -= leafAllHeight;
       treeNode.y =
         (treeNode.children[0].y +
           treeNode.children[treeNode.children.length - 1].y) /
@@ -162,17 +171,22 @@ TreeViewProps) => {
     } else {
       treeNode.y = y;
     }
-    return nextY + 120;
+    return nextY + leafAllHeight;
   };
 
-  const dfsAllTree = (treeNode, y, level, parentsIndex = []) => {
+  const dfsAllTree = (
+    treeNode: TreeViewNodeInfo,
+    y: number,
+    level: number,
+    parentsIndex: Array<number> = []
+  ) => {
     let nextY = y;
     treeNode.level = level;
     treeNode.parentsIndex = parentsIndex;
     // treeNode.expand = true;
     treeNode.x = (level - 1) * 360 + level * 70;
     if (treeNode.children) {
-      let y0 = 0;
+      let y0: number = 0;
       for (let i = 0; i < treeNode.children.length; i++) {
         nextY = dfsAllTree(treeNode.children[i], nextY, level + 1, [
           ...parentsIndex,
@@ -183,7 +197,7 @@ TreeViewProps) => {
           y0 = treeNode.children[0].y;
         }
       }
-      nextY -= 120;
+      nextY -= leafAllHeight;
       treeNode.y =
         (treeNode.children[0].y +
           treeNode.children[treeNode.children.length - 1].y) /
@@ -191,34 +205,52 @@ TreeViewProps) => {
     } else {
       treeNode.y = y;
     }
-    return nextY + 120;
+    return nextY + leafAllHeight;
   };
-  const handleExtend = (node) => {
+  const handleExtend = (node: TreeViewNodeInfo) => {
     let indexArr = node.parentsIndex;
     let itemArr = originData;
     let item = null;
 
-    // console.log(indexArr);
-    for (let i = 0; i < indexArr.length; i++) {
-      const index = indexArr[i];
-      item = itemArr[index];
-      itemArr = item.children;
-    }
-    let itemY = item.y;
-    item.expand = !item.expand;
+    if (Array.isArray(indexArr)) {
+      for (let i = 0; i < indexArr.length; i++) {
+        const index = indexArr[i];
+        item = itemArr[index];
+        itemArr = item.children;
+      }
+      if (!item) return;
+      let itemY = item.y;
+      item.expand = !item.expand;
 
-    let y = originY / 2;
-    for (let i = 0; i < originData.length; i++) {
-      y = dfsTree(originData[i], y, 1, [i]);
+      let y = originY / 2;
+      for (let i = 0; i < originData.length; i++) {
+        y = dfsTree(originData[i], y, 1, [i]);
+      }
+
+      console.log("---------");
+      console.log("curY", itemY);
+      console.log("nextY", item.y);
+      // originData[0].originY = itemY - item.y;
+      originData[0].originY = 0;
+
+      const wrapper = wrpperRef.current;
+      if (wrapper) {
+        wrapper.scrollTo(
+          wrapper.scrollLeft,
+          wrapper.scrollTop - (scale * (itemY - item.y)) / 100
+          // (wrapper.scrollHeight - wrapper.clientHeight) / 2
+        );
+      }
+      setOriginData([...originData]);
     }
-    // originData[0].originY = itemY - item.y;
-    originData[0].originY = 0;
-    setBaseY(itemY - item.y);
-    setOriginData([...originData]);
+    // console.log(indexArr);
+
     // dfsTree()
   };
-  const handleDrag = (e) => {
-    if (startDragXY) {
+  const handleDrag: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    const wrapper = wrpperRef.current;
+
+    if (startDragXY && wrapper) {
       wrpperRef.current.scrollTo(
         wrapper.scrollLeft - (e.clientX - startDragXY.x),
         wrapper.scrollTop - (e.clientY - startDragXY.y)
@@ -232,21 +264,45 @@ TreeViewProps) => {
       setStartDragXY(null);
     });
   }, []);
-  const handleDragStart = (e) => {
+  const handleDragStart: React.MouseEventHandler<HTMLDivElement> = (e) => {
     setStartDragXY({ x: e.clientX, y: e.clientY });
   };
 
   return (
-    <div style={{ width: `${width}px`, height: `${height}px` }}>
-      {okrTreeInfo.map((x) => (
-        <TreeViewNode
-          nodeInfo={{ ...x }}
-          key={`${x.id}-okr-node`}
-          onExtend={() => {
-            handleExtend(x);
-          }}
-        />
-      ))}
+    <div
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+        position: "relative",
+        overflow: "auto",
+        willChange: "transform",
+        cursor: startDragXY ? "grabbing" : "grab",
+        userSelect: "none",
+      }}
+      ref={wrpperRef}
+      onMouseMove={handleDrag}
+      onMouseDown={handleDragStart}
+    >
+      <div
+        style={{
+          height: `${originY * 2}px`,
+          width: `${levelNum * (leafWidth + 80)}px`,
+          transformOrigin: "left top",
+          transform: `scale(${scale / 100})`,
+        }}
+      >
+        {okrTreeInfo.map((x) => (
+          <TreeViewNode
+            nodeInfo={{ ...x }}
+            key={`${x.levelIndex}-${x.level}-okr-node`}
+            onToggleExtend={() => {
+              handleExtend(x);
+            }}
+          >
+            <LeafNodeComponent {...x} />
+          </TreeViewNode>
+        ))}
+      </div>
     </div>
   );
 };
