@@ -3,6 +3,8 @@ import { TreeViewNodeProps } from "./types";
 const TreeViewNode: React.FunctionComponent<TreeViewNodeProps> = ({
   onToggleExtend,
   nodeInfo,
+  leafHeight,
+  leafWidth,
   children,
 }) => {
   const { key, expand, show, x, y, expandSvgInfo } = nodeInfo;
@@ -10,28 +12,18 @@ const TreeViewNode: React.FunctionComponent<TreeViewNodeProps> = ({
   return (
     <div
       style={{
-        width: "360px",
+        width: `${leafWidth}px`,
         border: "1px solid #cccccc",
         padding: "6px",
         position: "absolute",
         top: ` ${y}px`,
         left: `${x}px`,
-        height: "80px",
+        height: `${leafHeight}px`,
         boxSizing: "border-box",
         display: show ? "flex" : "none",
       }}
     >
       {children}
-      <div
-        style={{
-          width: "340px",
-          height: "60px",
-          boxSizing: "border-box",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          wordBreak: "break-all",
-        }}
-      ></div>
       {childrenData?.length > 0 ? (
         <div
           onClick={() => {

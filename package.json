@@ -5,9 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
     "dev": "webpack serve --open --config webpack.dev.config.js"
   },
-  "author": "PaigeWw",
+  "author": "PaigeWw <767427364@qq.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PaigeWw/react-tree-view",
+    "directory": "packages/accordion"
+  },
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.16.12",

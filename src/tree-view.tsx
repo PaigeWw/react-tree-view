@@ -40,7 +40,7 @@ const TreeView: React.FunctionComponent<TreeViewProps> = ({
     });
     let pos = 0;
     let indexLevelMap: { [key: string]: number } = {};
-    // let queue = [];
+
     while (pos < queue.length) {
       if (queue[pos].children) {
         const level = (queue[pos].level as number) + 1;
@@ -63,7 +63,7 @@ const TreeView: React.FunctionComponent<TreeViewProps> = ({
       }
       pos++;
     }
-    console.log("indexLevelMap", indexLevelMap);
+
     setLevelNum(Object.keys(indexLevelMap).length + 1);
     setOriginData(dataSource as unknown as TreeViewNodeInfo[]);
   }, [dataSource]);
@@ -105,7 +105,6 @@ const TreeView: React.FunctionComponent<TreeViewProps> = ({
 
   useLayoutEffect(() => {
     const wrapper = wrpperRef.current;
-    // if (originY === 0) {
     if (wrapper) {
       wrapper.scrollTo(wrapper.scrollLeft, originY / 2);
     }
@@ -186,16 +185,11 @@ const TreeView: React.FunctionComponent<TreeViewProps> = ({
     // treeNode.expand = true;
     treeNode.x = (level - 1) * 360 + level * 70;
     if (treeNode.children) {
-      let y0: number = 0;
       for (let i = 0; i < treeNode.children.length; i++) {
         nextY = dfsAllTree(treeNode.children[i], nextY, level + 1, [
           ...parentsIndex,
           i,
         ]);
-        if (i === 0) {
-          //
-          y0 = treeNode.children[0].y;
-        }
       }
       nextY -= leafAllHeight;
       treeNode.y =
@@ -298,6 +292,8 @@ const TreeView: React.FunctionComponent<TreeViewProps> = ({
             onToggleExtend={() => {
               handleExtend(x);
             }}
+            leafWidth={leafWidth}
+            leafHeight={leafHeight}
           >
             <LeafNodeComponent {...x} />
           </TreeViewNode>

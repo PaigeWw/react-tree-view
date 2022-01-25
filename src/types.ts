@@ -22,6 +22,7 @@ export interface TreeViewNodeInfo {
     index:number;
     x: number;
     y: number;
+
     expandSvgInfo: {
         pathsInfo: {x0: number; y0: number; x1: number; y1: number}[];
         height: number;
@@ -39,7 +40,9 @@ export interface TreeViewNodeInfo {
 }
 export type TreeViewNodeProps = {
     onToggleExtend: Function;
-    nodeInfo: TreeViewNodeInfo,
+    nodeInfo: TreeViewNodeInfo;
+    leafHeight: number;
+    leafWidth: number;
 }
 
 
