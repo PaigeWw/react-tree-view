@@ -1,5 +1,5 @@
 {
-  "name": "react-tree-view",
+  "name": "react-mini-treeview",
   "version": "1.0.0",
   "description": "A lightweight tree view component for React.",
   "main": "index.js",
@@ -8,10 +8,10 @@
     "build": "webpack",
     "dev": "webpack serve --open --config webpack.dev.config.js"
   },
-  "author": "PaigeWw <767427364@qq.com>",
+  "author": "paigeww <paigeww@163.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PaigeWw/react-tree-view",
+    "url": "git+https://github.com/PaigeWw/react-tree-view",
     "directory": "packages/accordion"
   },
   "license": "ISC",
