@@ -9,7 +9,7 @@ const TreeViewNode = ({ onToggleExtend, nodeInfo, leafHeight, leafWidth, childre
     const childrenData = nodeInfo.children;
     return (react_1.default.createElement("div", { style: {
             width: `${leafWidth}px`,
-            padding: "6px",
+            // padding: "6px",
             position: "absolute",
             top: ` ${y}px`,
             left: `${x}px`,
@@ -38,7 +38,7 @@ const TreeViewNode = ({ onToggleExtend, nodeInfo, leafHeight, leafWidth, childre
         expandSvgInfo ? (react_1.default.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", version: "1.1", height: expandSvgInfo.height + 6, width: "60", style: {
                 position: "absolute",
                 top: ` ${-expandSvgInfo.height / 2 + 40}px`,
-                left: `${366}px`,
+                left: `${leafWidth + 10}px`,
                 opacity: expand ? 1 : 0,
             } }, expandSvgInfo.pathsInfo.map((info, i) => (react_1.default.createElement("path", { key: `${key}-${i}`, d: `M ${info.x0} ${info.y0} L ${info.x1} ${info.y1}`, stroke: "#b3b3b3", strokeWidth: "1", fill: "none" }))))) : null));
 };

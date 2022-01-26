@@ -13,8 +13,7 @@ const TreeViewNode: React.FunctionComponent<TreeViewNodeProps> = ({
     <div
       style={{
         width: `${leafWidth}px`,
-
-        padding: "6px",
+        // padding: "6px",
         position: "absolute",
         top: ` ${y}px`,
         left: `${x}px`,
@@ -57,7 +56,7 @@ const TreeViewNode: React.FunctionComponent<TreeViewNodeProps> = ({
           style={{
             position: "absolute",
             top: ` ${-expandSvgInfo.height / 2 + 40}px`,
-            left: `${366}px`,
+            left: `${leafWidth + 10}px`,
             opacity: expand ? 1 : 0,
           }}
         >
