@@ -4,9 +4,11 @@ module.exports = {
   entry: {
     index: "./src/index.tsx",
   },
+
   output: {
-    path: path.resolve(__dirname),
+    path: path.resolve(__dirname, "dist"),
     filename: "index.js",
+    libraryTarget: "umd",
   },
   module: {
     rules: [
@@ -26,5 +28,5 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
-  mode: "production",
+  //   mode: "production",
 };

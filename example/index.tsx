@@ -1,15 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { DataSource } from "./../src/types";
-import TreeView from "./../src/tree-view";
+import { DataSource } from "../src/types";
+// import TreeView from "../build/index";
+import TreeView from "../src/index";
 interface MyData extends DataSource {
   name: string;
   children?: any[];
 }
 
 const LeafNodeComponent: React.FC<MyData> = ({ name }) => {
-  return <div>{name}</div>;
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        border: "1px solid #cccccc",
+      }}
+    >
+      {name}
+    </div>
+  );
 };
 
 const App: React.FC = () => {

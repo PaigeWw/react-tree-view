@@ -13,7 +13,7 @@ const TreeViewNode: React.FunctionComponent<TreeViewNodeProps> = ({
     <div
       style={{
         width: `${leafWidth}px`,
-        border: "1px solid #cccccc",
+
         padding: "6px",
         position: "absolute",
         top: ` ${y}px`,
