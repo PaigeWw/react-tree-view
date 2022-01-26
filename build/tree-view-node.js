@@ -9,7 +9,6 @@ const TreeViewNode = ({ onToggleExtend, nodeInfo, leafHeight, leafWidth, childre
     const childrenData = nodeInfo.children;
     return (react_1.default.createElement("div", { style: {
             width: `${leafWidth}px`,
-            border: "1px solid #cccccc",
             padding: "6px",
             position: "absolute",
             top: ` ${y}px`,

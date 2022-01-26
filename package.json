@@ -1,6 +1,6 @@
 {
   "name": "react-mini-treeview",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A lightweight tree view component for React.",
   "main": "./build/index.js",
   "scripts": {
@@ -8,8 +8,7 @@
     "build": "webpack",
     "buildTS": "tsc",
     "dev": "webpack serve --open --config webpack.dev.config.js",
-    "buildExample": "webpack --config webpack.dev.config.js",
-    "prepublish": "npm run buildTS"
+    "buildExample": "webpack --config webpack.dev.config.js"
   },
   "author": "paigeww <paigeww@163.com>",
   "repository": {
