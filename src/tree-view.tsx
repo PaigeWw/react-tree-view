@@ -66,6 +66,7 @@ const TreeView: React.FunctionComponent<TreeViewProps> = ({
 
     setLevelNum(Object.keys(indexLevelMap).length + 1);
     setOriginData(dataSource as unknown as TreeViewNodeInfo[]);
+    setOriginY(0);
   }, [dataSource]);
 
   useEffect(() => {

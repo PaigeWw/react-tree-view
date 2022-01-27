@@ -3,8 +3,8 @@ import React from 'react';
 
 export type TreeViewProps = {
     dataSource: DataSource[];
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
     scaleTool: Boolean;
     leafHeight: number;
     leafWidth: number;
