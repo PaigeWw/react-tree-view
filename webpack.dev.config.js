@@ -7,7 +7,7 @@ module.exports = {
     app: "./example/index.tsx",
   },
   output: {
-    path: path.resolve(__dirname, "example/dist"),
+    path: path.resolve(__dirname, "example/build"),
     filename: "[name].js",
   },
   module: {
