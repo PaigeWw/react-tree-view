@@ -265,8 +265,8 @@ const TreeView: React.FunctionComponent<TreeViewProps> = ({
   return (
     <div
       style={{
-        width: `${width}px`,
-        height: `${height}px`,
+        width: width ? `${width}px` : "100%",
+        height: height ? `${height}px` : "100%",
         position: "relative",
         overflow: "auto",
         willChange: "transform",

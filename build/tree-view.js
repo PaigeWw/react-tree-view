@@ -237,8 +237,8 @@ const TreeView = ({ dataSource, width, height, leafHeight, leafWidth, LeafNodeCo
         setStartDragXY({ x: e.clientX, y: e.clientY });
     };
     return (react_1.default.createElement("div", { style: {
-            width: `${width}px`,
-            height: `${height}px`,
+            width: width ? `${width}px` : "100%",
+            height: height ? `${height}px` : "100%",
             position: "relative",
             overflow: "auto",
             willChange: "transform",
