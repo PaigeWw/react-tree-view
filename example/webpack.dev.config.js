@@ -2,12 +2,14 @@ const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
+console.log(__dirname);
+
 module.exports = {
   entry: {
     app: "./example/index.tsx",
   },
   output: {
-    path: path.resolve(__dirname, "example/build"),
+    path: path.resolve(__dirname, "build"),
     filename: "[name].js",
   },
   module: {
@@ -20,7 +22,12 @@ module.exports = {
             loader: "babel-loader",
             options: { presets: ["@babel/preset-react"] },
           },
-          { loader: "ts-loader" },
+          {
+            loader: "ts-loader",
+            options: {
+              configFile: "tsconfig-example.json",
+            },
+          },
         ],
       },
       {
