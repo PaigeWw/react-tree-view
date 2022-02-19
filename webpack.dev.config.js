@@ -23,6 +23,10 @@ module.exports = {
           { loader: "ts-loader" },
         ],
       },
+      {
+        test: /\.png|jpg$/,
+        use: { loader: "file-loader" },
+      },
     ],
   },
   resolve: {
