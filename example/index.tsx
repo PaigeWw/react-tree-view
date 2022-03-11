@@ -30,54 +30,71 @@ const App: React.FC = () => {
   const treeViewRef = useRef<TreeViewRef>();
   const dataList: MyData[] = [
     {
-      name: "jhfjkahf",
+      name: "Tom",
       children: [
         {
-          name: "hudhuhu",
-          children: [
-            { name: "hugggguhu" },
-            { name: "nnnnjjdfhu" },
-            { name: "vvvvvccdddd" },
-            { name: "rrrrrrdfgfgfg" },
-          ],
+          name: "Lily",
         },
         {
-          name: "hudhuhu",
-          children: [
-            { name: "hugggguhu" },
-            { name: "vvvvvccdddd" },
-            { name: "rrrrrrdfgfgfg" },
+          name: "Bob",
+        },
+        {
+          name: "Kiki",
+        },
+      ],
+      parents: [
+        {
+          name: "John",
+        },
+        {
+          name: "Mary",
+          parent: [
+            {
+              name: "Jake",
+            },
           ],
         },
       ],
     },
     {
-      name: "jhfjkahf",
+      name: "Jerry",
       children: [
         {
-          name: "hudhuhu",
-          children: [
-            { name: "hugggguhu" },
-            { name: "fgfgfggguhu" },
-            { name: "nnnnjjdfhu" },
-            { name: "rrrrrrdfgfgfg" },
-          ],
+          name: "Lily",
         },
         {
-          name: "hudhuhu",
+          name: "Bob",
+        },
+        {
+          name: "Hubert",
           children: [
-            { name: "hugggguhu" },
-            { name: "fgfgfggguhu" },
-            { name: "nnnnjjdfhu" },
-            { name: "vvvvvccdddd" },
             {
-              name: "rrrrrrdfgfgfg",
-              children: [
-                { name: "hugggguhu" },
-                { name: "fgfgfggguhu" },
-                { name: "nnnnjjdfhu" },
-                { name: "rrrrrrdfgfgfg" },
-              ],
+              name: "Janet",
+            },
+            {
+              name: "Mosley",
+            },
+            {
+              name: "Cindy",
+            },
+            {
+              name: "Bates",
+            },
+          ],
+        },
+      ],
+      parents: [
+        {
+          name: "Peter",
+        },
+        {
+          name: "Aarn",
+          parents: [
+            {
+              name: "Lana",
+            },
+            {
+              name: "Lync",
             },
           ],
         },
