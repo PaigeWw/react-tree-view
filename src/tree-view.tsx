@@ -150,44 +150,16 @@ const TreeView = React.forwardRef(
       }
       y = (y - leafAllHeight) / 2;
 
-      let rightY = y;
-      let leftY = y;
-      for (let i = 0; i < queue.length; i++) {
-        rightY = dfsTree(queue[i], y, 1, [i]);
-        leftY = dfsParentsTree(queue[i], y, 1, [i]);
-        console.log("rightY:", rightY, ",leftY:", leftY);
+      // calculating the position of the nodes
+      caclPosition(queue, y);
 
-        if (rightY > leftY) {
-          leftY = (rightY - leftY) / 2 + y;
-          dfsParentsTree(queue[i], leftY, 1, [i]);
-        } else if (rightY < leftY) {
-          rightY = (leftY - rightY) / 2 + y;
-          dfsTree(queue[i], rightY, 1, [i]);
-        }
-
-        y = Math.max(rightY, leftY);
-        console.log("y:", y);
-      }
-
-      // y = (y - leafAllHeight) / 2;
-      // for (let i = 0; i < queue.length; i++) {
-      //   y = dfsParentsTree(queue[i], y, 1, [i]);
-      // }
-
-      // console.log(y);
       let pos = 0;
       while (pos < queue.length) {
         if (queue[pos].expand && queue[pos].children) {
-          // const level = queue[pos].level + 1;
-          // queue[pos].childrenIds = queue[pos].children.map((x) => x.id);
           queue.push(...(queue[pos].children as Array<any>));
-          // queue.push(...(queue[pos].parents as Array<any>));
         }
         if (queue[pos].parentExpand && queue[pos].parents) {
-          // const level = queue[pos].level + 1;
-          // queue[pos].childrenIds = queue[pos].children.map((x) => x.id);
           queue.push(...(queue[pos].parents as Array<any>));
-          // queue.push(...(queue[pos].parents as Array<any>));
         }
         pos++;
       }
@@ -264,6 +236,7 @@ const TreeView = React.forwardRef(
       } else {
         treeNode.y = y;
       }
+
       return nextY + leafAllHeight;
     };
 
@@ -390,9 +363,39 @@ const TreeView = React.forwardRef(
         treeNode.parentExpandSvgInfo.posY = y0 + 2;
       } else {
         treeNode.y = y;
-        console.log("没有父节点");
+
+        if (level === 1) {
+          console.log("------left------");
+          console.log("y ", y);
+          console.log(treeNode);
+          console.log("treeNode.y", treeNode.y);
+          console.log("");
+        }
       }
       return nextY + leafAllHeight;
+    };
+
+    const caclPosition = (dataList: DataSource, y: number) => {
+      let rightY = y;
+      let leftY = y;
+      for (let i = 0; i < dataList.length; i++) {
+        rightY = dfsTree(dataList[i], y, 1, [i]);
+        let rightRootY = dataList[i].y;
+        leftY = dfsParentsTree(dataList[i], y, 1, [i]);
+        let leftRootY = dataList[i].y;
+        if (rightY > leftY) {
+          leftY = rightRootY - leftRootY + y;
+          dfsParentsTree(dataList[i], leftY, 1, [i]);
+          y = rightY;
+        } else if (rightY < leftY) {
+          rightY = leftRootY - rightRootY + y;
+          dfsTree(dataList[i], rightY, 1, [i]);
+          y = leftY;
+        } else {
+          y = leftY;
+        }
+        // y = dfsTree(originData[i], y, 1, [i]);
+      }
     };
     const handleExtend = (node: TreeViewNodeInfo) => {
       let indexArr = node.parentsIndex;
@@ -410,24 +413,7 @@ const TreeView = React.forwardRef(
         item.expand = !item.expand;
 
         let y = originY / 2;
-        let rightY = y;
-        let leftY = y;
-        for (let i = 0; i < originData.length; i++) {
-          // rightY = dfsTree(originData[i], y, 1, [i]);
-          // leftY = dfsParentsTree(originData[i], y, 1, [i]);
-          // if (rightY > leftY) {
-          //   leftY = (rightY - leftY) / 2 + y;
-          //   dfsParentsTree(originData[i], leftY, 1, [i]);
-          //   y = rightY;
-          // } else if (rightY < leftY) {
-          //   rightY = (leftY - rightY) / 2 + y;
-          //   dfsTree(originData[i], rightY, 1, [i]);
-          //   y = leftY;
-          // } else {
-          //   y = leftY;
-          // }
-          y = dfsTree(originData[i], y, 1, [i]);
-        }
+        caclPosition(originData, y);
 
         // console.log("---------");
         // console.log("curY", itemY);
@@ -469,20 +455,7 @@ const TreeView = React.forwardRef(
         //   y = dfsParentsTree(originData[i], y, 1, [i]);
         // }
 
-        let rightY = y;
-        let leftY = y;
-        for (let i = 0; i < originData.length; i++) {
-          rightY = dfsTree(originData[i], y, 1, [i]);
-          leftY = dfsParentsTree(originData[i], y, 1, [i]);
-          if (rightY > leftY) {
-            leftY = (rightY - leftY) / 2 + y;
-            dfsParentsTree(originData[i], leftY, 1, [i]);
-          } else if (rightY < leftY) {
-            rightY = (leftY - rightY) / 2 + y;
-            dfsTree(originData[i], rightY, 1, [i]);
-          }
-          y = Math.max(rightY, leftY);
-        }
+        caclPosition(originData, y);
 
         // originData[0].originY = itemY - item.y;
         originData[0].originY = 0;

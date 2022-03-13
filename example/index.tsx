@@ -29,33 +29,33 @@ const LeafNodeComponent: React.FC<MyData> = ({ name }) => {
 const App: React.FC = () => {
   const treeViewRef = useRef<TreeViewRef>();
   const dataList: MyData[] = [
-    {
-      name: "Tom",
-      children: [
-        {
-          name: "Lily",
-        },
-        {
-          name: "Bob",
-        },
-        {
-          name: "Kiki",
-        },
-      ],
-      parents: [
-        {
-          name: "John",
-        },
-        {
-          name: "Mary",
-          parent: [
-            {
-              name: "Jake",
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   name: "Tom",
+    //   children: [
+    //     {
+    //       name: "Lily",
+    //     },
+    //     {
+    //       name: "Bob",
+    //     },
+    //     {
+    //       name: "Kiki",
+    //     },
+    //   ],
+    //   parents: [
+    //     {
+    //       name: "John",
+    //     },
+    //     {
+    //       name: "Mary",
+    //       parent: [
+    //         {
+    //           name: "Jake",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     {
       name: "Jerry",
       children: [

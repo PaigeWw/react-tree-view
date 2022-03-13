@@ -1,6 +1,6 @@
 {
   "name": "react-mini-treeview",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "description": "A lightweight tree view component for React.",
   "keywords": ["react-tree","tree"],
   "main": "./build/index.js",
