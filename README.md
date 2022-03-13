@@ -1,8 +1,8 @@
-# react-tree-view
+﻿# react-tree-view
 
 ## A lightweight tree view component for React.
 
-## DEMO
+## demo
 
 [https://react-tree-view.vercel.app](https://react-tree-view.vercel.app/)
 
@@ -16,8 +16,8 @@
 
 ## Usage
 
-```
-import TreeView from 'react-mini-treeview'
+```typescript
+import TreeView from ''
 
 <TreeView
     dataSource={dataList as DataSource[]}
@@ -32,7 +32,7 @@ import TreeView from 'react-mini-treeview'
 
 ## API
 
-```
+```typescript
 type TreeViewProps = {
     dataSource: DataSource[];
     width?: number;
